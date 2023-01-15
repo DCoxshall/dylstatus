@@ -10,7 +10,7 @@ mostly because her project is actually usable.
 
 If you decide you want to try this on your machine (not recommended) then the
 current setup is to simply clone the repo and put it somewhere you'll remember.
-Then change the line `status_command i3status` to `status_command python
+Then change the line `status_command i3status` to `status_command 
 [your/path/to/main.py]` in your i3 config file (should be at the bottom). i3bar
 can be reloaded by running `i3-msg reload`. 
 
