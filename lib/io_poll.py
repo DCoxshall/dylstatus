@@ -1,3 +1,5 @@
+# Currently unused, this is a click-event proof of concept
+
 import select
 import sys
 

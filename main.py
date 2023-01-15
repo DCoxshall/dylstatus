@@ -20,7 +20,7 @@ def setup() -> dict:
         config_data = {line.rstrip(): "" for line in lines}
 
     except FileNotFoundError:
-        config_data = {"time": "", "battery": ""}
+        config_data = {"time": "", "battery": "", "cpu_usage": ""}
 
     return config_data
 
@@ -42,7 +42,6 @@ def run(active_modules: dict):
             blocks.append(_time.get_block(active_modules["time"]))
 
         render.render(blocks)
-        # attemptRead()
 
         time.sleep(.125)
 
@@ -50,22 +49,3 @@ def run(active_modules: dict):
 if __name__ == "__main__":
     active_modules = setup()
     run(active_modules)
-
-# print("{\"version\": 1, \"click_events\": true}")
-
-
-# print("[")
-# print("[]")
-# while True:
-#     color = "#00ff00"
-#     data = {}
-#     data["full_text"] = _cpu.get_cpu_usage()
-#     data["color"] = color
-
-#     render.render([data])
-#     time.sleep(0.1)
-
-#     x = sys.stdin.read(1)
-#     f = open("/home/dylan/Documents/Code/dylstatus/file.txt", "a")
-#     f.write(x)
-#     f.close()

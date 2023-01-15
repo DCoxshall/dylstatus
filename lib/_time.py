@@ -7,6 +7,7 @@ def get_date() -> str:
 
 def get_block(module_info: dict) -> dict:
     block = {}
+    block["name"] = "time"
     block["full_text"] = get_date()
     # block["name"] = "time"
     return block
