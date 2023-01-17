@@ -4,8 +4,8 @@ import os
 def is_charging(batteries: list):
     if "AC" in batteries:
         charging_status_file = open("/sys/class/power_supply/AC/online", "r")
-        status = charging_status_file.readline()
-        if status.rstrip() == "0":
+        status = charging_status_file.readline().rstrip()
+        if status == "0":
             charging = False
         else:
             charging = True
@@ -17,12 +17,12 @@ def is_charging(batteries: list):
 def get_block(module_info: dict) -> dict:
     block = {"name": "battery"}
     batteries = os.listdir("/sys/class/power_supply")
-    is_charging == is_charging(batteries)
+    charging = is_charging(batteries)
 
     if "AC" in batteries:
         batteries.remove("AC")
 
-    if is_charging:
+    if charging:
         text = "Charging - "
     else:
         text = "Not charging - "
@@ -38,3 +38,7 @@ def get_block(module_info: dict) -> dict:
 
     block["full_text"] = text
     return block
+
+
+if __name__ == "__main__":
+    get_block(4)
