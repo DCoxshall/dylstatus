@@ -1,29 +1,40 @@
-import psutil
-import subprocess
+import os
 
 
-def get_remaining_time(battery: psutil._common.sbattery) -> str:
-    minutes, seconds = divmod(battery.secsleft, 60)
-    hours, minutes = divmod(minutes, 60)
-    return "%d:%02d:%02d" % (hours, minutes, seconds)
-
-
-def get_battery_percentage(battery: psutil._common.sbattery) -> str:
-    return str(round(battery.percent, 1)) + "%"
-
-
-def get_state(battery: psutil._common.sbattery) -> str:
-    if battery.power_plugged:
-        return "Plugged in"
+def is_charging(batteries: list):
+    if "AC" in batteries:
+        charging_status_file = open("/sys/class/power_supply/AC/online", "r")
+        status = charging_status_file.readline()
+        if status.rstrip() == "0":
+            charging = False
+        else:
+            charging = True
     else:
-        return "Not plugged in"
+        charging = False
+    return charging
 
 
 def get_block(module_info: dict) -> dict:
-    battery = psutil.sensors_battery()
-    block = {}
-    text = "{percent} - {time} - {state}".format(percent=get_battery_percentage(
-        battery), time=get_remaining_time(battery), state=get_state(battery))
+    block = {"name": "battery"}
+    batteries = os.listdir("/sys/class/power_supply")
+    is_charging == is_charging(batteries)
+
+    if "AC" in batteries:
+        batteries.remove("AC")
+
+    if is_charging:
+        text = "Charging - "
+    else:
+        text = "Not charging - "
+
+    for battery in batteries:
+        try:
+            battery_capacity = open(
+                "/sys/class/power_supply/{}/capacity".format(battery)).readline().rstrip()
+            text += "{}: {} - ".format(battery, battery_capacity)
+        except FileNotFoundError:
+            text += "{battery} - "
+    text = text[0:-3]
+
     block["full_text"] = text
-    block["name"] = "battery"
     return block
