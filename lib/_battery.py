@@ -31,7 +31,7 @@ def get_block(module_info: dict) -> dict:
         try:
             battery_capacity = open(
                 "/sys/class/power_supply/{}/capacity".format(battery)).readline().rstrip()
-            text += "{}: {} - ".format(battery, battery_capacity)
+            text += "{}: {}% - ".format(battery, battery_capacity)
         except FileNotFoundError:
             text += "{battery} - "
     text = text[0:-3]

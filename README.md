@@ -17,7 +17,7 @@ can be reloaded by running `i3-msg reload`.
 Current modules:
 - Date and time
 - Internet connectivity
-- Battery percentage and remaining time
+- Battery percentage and remaining time, with support for multiple batteries
 
 dylstatus is currently still under development. Please be gentle.
 
