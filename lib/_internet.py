@@ -1,15 +1,18 @@
-import urllib.request
 import socket
 
-hostname = "https://www.google.com"
+hostname = "google.com"
 
 
 def internet_connected():
-    res = urllib.request.urlopen(hostname)
-    if res.status == 200:
-        return True
-    else:
-        return False
+    '''If internet is connected, return local IP address. If not, return "Not Connected"'''
+    try:
+        s = socket.create_connection((hostname, 80), timeout=0.5)
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception:
+        pass
+    return "Not Connected"
 
 
 def get_local_ip():
@@ -20,11 +23,12 @@ def get_local_ip():
 def get_block(module_info: dict):
     block = {"name": "internet"}
 
-    if internet_connected():
-        block["full_text"] = "Connected: {}".format(get_local_ip())
-        block["color"] = "#00ff00"
+    ip = internet_connected()
+    block["full_text"] = ip
+
+    if ip == "Not Connected":
+        block["color"] = "#FF0000"
     else:
-        block["full_text"] = "Not Connected"
-        block["color"] = "#ff0000"
+        block["color"] = "#00FF00"
 
     return block
