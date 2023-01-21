@@ -4,7 +4,7 @@ from io import StringIO
 import sys
 import json
 
-from lib import render, _time, _cpu, _battery, _internet
+from lib import render, _time, _cpu, _battery, _internet, _memory
 from lib.io_poll import attemptRead
 
 
@@ -30,9 +30,11 @@ def run(active_modules: dict):
     print("{\"version\": 1, \"click_events\": true}")
     print("[[],")
 
-    # time should be the last module to be called, to ensure accuracy
+    # Order of blocks in list is the order in which they will be rendered
     while True:
         blocks = []
+        if "ram" in active_modules:
+            blocks.append(_memory.get_block(active_modules["ram"]))
         if "cpu_usage" in active_modules:
             blocks.append(_cpu.get_block(active_modules["cpu_usage"]))
         if "battery" in active_modules:
